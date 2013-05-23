@@ -177,10 +177,13 @@ package com.videojs{
             return _src;
         }
         public function set src(pValue:String):void{
-            _src = pValue;
+            
+			_src = pValue;
+			this.setModeFromSrc();
             _rtmpConnectionURL = "";
             _rtmpStream = "";
             _currentPlaybackType = PlaybackType.HTTP;
+			
             broadcastEventExternally(ExternalEventName.ON_SRC_CHANGE, _src);
             initProvider();
             if(_autoplay){
@@ -222,6 +225,7 @@ package com.videojs{
          */        
         public function set srcFromFlashvars(pValue:String):void{
             _src = pValue;
+			this.setModeFromSrc();
             _currentPlaybackType = PlaybackType.HTTP
             initProvider();
             if(_autoplay){
@@ -231,7 +235,21 @@ package com.videojs{
                 _provider.load();
             }
         }
-        
+		
+		
+		private function setModeFromSrc():void{
+			
+			var mp3_match:RegExp = /.*\.mp3$/;
+			// this is a crude way of detecting audio files, and there will be many false negatives
+			// TODO: better way of communicating the mime type to flash
+			
+			if (_src.match(mp3_match)){
+				this.mode = PlayerMode.AUDIO;
+			} else {
+				this.mode = PlayerMode.VIDEO;
+			}
+		}
+		        
         
         public function get poster():String{
             return _poster;

@@ -20,6 +20,8 @@ package{
     [SWF(backgroundColor="#000000", frameRate="60", width="480", height="270")]
     public class VideoJS extends Sprite{
         
+		trace('Videopixie has adapted VJS to enable mp3 playback via Flash');
+		
         private var _app:VideoJSApp;
         private var _stageSizeTimer:Timer;
         
